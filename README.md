@@ -1,14 +1,22 @@
 # whisperX Subs
 
-This repository provides a utility for processing audio files using the `whisperx` tool, with an added functionality to format subtitles based on a user-specified maximum size.
+This repository provides utilities for processing audio files using the `whisperx` tool, with added functionalities that include formatting subtitles based on a user-specified maximum size, and downloading videos and audios from YouTube.
 
-## Using the Notebook
+## Using the Notebooks
 
-To easily run and interact with the code, you can access the provided Jupyter notebook via Google Colab:
+There are two Jupyter notebooks provided:
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/lrubiorod/whisperX_subs/blob/main/whisperx_subs.ipynb)
+1. **whisperx_subs.ipynb**: This notebook focuses on processing audio files and generating well-formatted subtitles.
+   
+   To easily run and interact with the code, you can access the notebook via Google Colab:
+   
+   [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/lrubiorod/whisperX_subs/blob/main/whisperx_subs.ipynb)
 
-By launching the notebook, you'll have a hands-on environment to run, modify, and experiment with the code in real-time.
+2. **youtube_to_audio.ipynb**: This notebook allows you to download videos and audios from YouTube, which can then be processed using the `whisperx_subs.ipynb` notebook.
+
+   [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/lrubiorod/whisperX_subs/blob/main/youtube_to_audio.ipynb)
+
+By launching these notebooks, you'll have a hands-on environment to run, modify, and experiment with the code in real-time.
 
 ## About the Tool
 
