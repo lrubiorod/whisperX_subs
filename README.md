@@ -24,4 +24,10 @@ By launching these notebooks, you'll have a hands-on environment to run, modify,
 
 This utility builds upon the [whisperx repository](https://github.com/m-bain/whisperX) to process audio files and generate transcriptions. The added functionality in this repository allows for conditioning the generated subtitles so that they adhere to a maximum length, as specified by the user. This is particularly useful for ensuring that subtitles are easily readable and well-paced for viewers.
 
+## Acknowledgements & License
+
+Parts of this project utilize software developed by Max Bain. We would like to express our gratitude to Max Bain for his contribution.
+
+Any use, redistribution, or modification of the software from the [whisperx repository](https://github.com/m-bain/whisperX) should adhere to the licensing terms provided by Max Bain. Please refer to the associated license file for detailed terms and conditions.
+
 
