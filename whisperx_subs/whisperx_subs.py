@@ -51,7 +51,7 @@ def split_text_into_equal_segments(segment_text, n_segments):
 
     return segments
 
-def convert_json_to_srt(json_str, max_char, translate=None):
+def convert_json_to_srt(json_str, max_char, translator_model=None):
     """
     Convert a given JSON string to SRT format.
     
@@ -72,24 +72,18 @@ def convert_json_to_srt(json_str, max_char, translate=None):
     index = 1 
     start_word = 0
     end_word = 0
-    source_lang = None
+    source_lang = data["language"]
 
     # If translation is required, initialize the translation pipeline
     translator = None
-    if translate:
-        source_lang, target_lang = translate.split('-')
-        model_name = f'Helsinki-NLP/opus-mt-{source_lang}-{target_lang}'
-        translator = pipeline('translation', model=model_name)
+    if translator_model:
+        translator = pipeline('translation', model=translator_model)
 
     # Iterate over each segment in the data.
     for segment in data["segments"]:
         words = segment['words']
         segment_text = segment['text']
-
-        if source_lang == 'ja':
-            len_text = 2 * len(segment_text)
-        else:
-            len_text = len(segment_text)
+        len_text = len(segment_text)
 
         # Determine the number of segments needed based on the max_char limit.
         n_segments = (len_text // max_char) + 1
@@ -127,8 +121,11 @@ def convert_json_to_srt(json_str, max_char, translate=None):
             else:
                 if len(text) == 0:
                     start_time = start_word
-                text += word['word'] + " "
+                    
+                if source_lang == "ja" or source_lang == "zh":
+                    text += word['word']
+                else:
+                    text += word['word'] + " "
 
     return srt_output
-    
     
