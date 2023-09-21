@@ -1,5 +1,6 @@
 import json
 from transformers import pipeline
+from tqdm import tqdm
 
 def format_time_to_srt(time_value):
     """
@@ -63,11 +64,10 @@ def convert_json_to_srt(json_str, max_char, translator_model=None):
     Returns:
     - str: The formatted SRT string.
     """
-    
+
     # Parse the input JSON string.
     data = json.loads(json_str)
-
-
+    
     srt_output = ""
     index = 1 
     start_word = 0
@@ -80,7 +80,7 @@ def convert_json_to_srt(json_str, max_char, translator_model=None):
         translator = pipeline('translation', model=translator_model)
 
     # Iterate over each segment in the data.
-    for segment in data["segments"]:
+    for segment in tqdm(data["segments"], desc="Converting segments", ncols=100):
         words = segment['words']
         segment_text = segment['text']
         len_text = len(segment_text)
@@ -128,4 +128,4 @@ def convert_json_to_srt(json_str, max_char, translator_model=None):
                     text += word['word'] + " "
 
     return srt_output
-    
+
