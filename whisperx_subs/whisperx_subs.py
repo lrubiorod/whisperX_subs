@@ -63,7 +63,8 @@ def convert_json_to_srt(json_str, max_char, langs=[], model_name='Helsinki-NLP/o
     - model_name (str): Base model name for translation.
 
     Returns:
-    - list: A list containing the original SRT and its translations.
+    - tuple: A tuple containing a list with the original SRT and its translations, 
+             and a dictionary with the complete texts for each language.
     """
     
     # Load the JSON content
@@ -75,8 +76,9 @@ def convert_json_to_srt(json_str, max_char, langs=[], model_name='Helsinki-NLP/o
     for lang in langs:
         translators[lang] = pipeline('translation', model=f'{model_name}-{source_lang}-{lang}')
 
-    # Initialize the srt outputs for each language (source + target languages)
+    # Initialize the srt outputs and complete texts for each language (source + target languages)
     srt_outputs = {lang: "" for lang in [source_lang] + langs}
+    txt_outputs = {lang: [] for lang in [source_lang] + langs}
 
     index = 1 
     start_word = 0
@@ -88,6 +90,9 @@ def convert_json_to_srt(json_str, max_char, langs=[], model_name='Helsinki-NLP/o
         segment_text = segment['text']
         len_text = len(segment_text)
 
+        # Append the original segment text to txt_outputs
+        txt_outputs[source_lang].append(segment_text)
+
         # Calculate number of srt segments needed based on max_char limit
         n_segments = (len_text // max_char) + 1
         len_segment = len_text // n_segments
@@ -98,6 +103,9 @@ def convert_json_to_srt(json_str, max_char, langs=[], model_name='Helsinki-NLP/o
         for lang in langs:
             translated_text = translators[lang](segment_text, max_length=10000)[0]['translation_text']
             translated_texts_segments[lang] = split_text_into_equal_segments(translated_text, n_segments)
+            
+            # Append the translated text to txt_outputs
+            txt_outputs[lang].append(translated_text)
 
         start_time = segment.get('start', end_word)
         i_translated_segment = {lang: 0 for lang in langs}
@@ -133,5 +141,6 @@ def convert_json_to_srt(json_str, max_char, langs=[], model_name='Helsinki-NLP/o
                 else:
                     texts[source_lang] += word['word'] + " "
 
-    return list(srt_outputs.values())
+
+    return srt_outputs, txt_outputs
 
